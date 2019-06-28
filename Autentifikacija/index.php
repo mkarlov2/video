@@ -48,4 +48,3 @@ Helper::getFooter();
 
 ?>
 
-<!---->
