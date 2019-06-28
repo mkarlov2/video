@@ -37,7 +37,6 @@ Helper::getNav();
 
         </tr>
         
-
 </table>
 
 <?php 
@@ -48,3 +47,5 @@ Helper::getNav();
 Helper::getFooter();
 
 ?>
+
+<!---->
