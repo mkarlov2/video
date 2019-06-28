@@ -6,19 +6,18 @@ $db = DB::getInstance();
 
 $proba = $db->get('ozndvorana', 'dvorana');
 
-foreach ($proba as $key => $value) 
+foreach ($db->results($proba) as $key => $value) 
 {
+
     foreach ($value as $k => $v) 
     {
-        
-    
-
-
+      
 Helper::getHeader('Home page');
 
 Helper::getNav();
 
 ?>
+
 <style>
 
     td
@@ -28,14 +27,13 @@ Helper::getNav();
     padding:0 10px;
     width:120px;}
     
-
 </style>
 
 <table>
 
         <tr>
         
-        <td><?php echo $v->ozndvorana;?></td>
+            <td><?php echo $v;?></td>
 
         </tr>
         
@@ -43,6 +41,7 @@ Helper::getNav();
 </table>
 
 <?php 
+
     } 
 }
 

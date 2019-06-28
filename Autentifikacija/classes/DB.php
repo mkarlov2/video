@@ -5,7 +5,7 @@ class DB {
     private $config;
     private $query;
     private $error = false;
-    public $results;
+    private $results;
     private $count = 0;
     
     
@@ -171,4 +171,20 @@ class DB {
     {
         return $this->error;
     }
+
+    public function results()
+    {
+        return $this->results;
+    }
+
+    public function first()
+    {
+        return $this->results()[0];
+    }
+
+    public function count()
+    {
+        return $this->count;
+    }
+
 }
