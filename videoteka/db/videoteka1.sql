@@ -1,86 +1,133 @@
-/*ZA IZRADU BAZE 1 bod*/
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jun 30, 2019 at 04:37 PM
+-- Server version: 10.1.39-MariaDB
+-- PHP Version: 7.3.5
 
-CREATE DATABASE IF NOT EXISTS videoteka1 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-DROP DATABASE IF EXISTS videoteka1;
-
-USE videoteka1;
-
-SHOW TABLES;
-
-/* ZA IZRADU TABLICE FILMOVI */
-
-CREATE TABLE IF NOT EXISTS filmovi 
-(id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-naziv VARCHAR(50) NOT NULL) ENGINE =InnoDB;
-
-DESCRIBE filmovi;
-
-/* ZA IZRADU TABLICE ČLANOVI */
-
-CREATE TABLE IF NOT EXISTS clanovi
-(id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-ime VARCHAR(50) NOT NULL,
-prezime VARCHAR(50) NOT NULL) ENGINE =InnoDB;
-
-DESCRIBE clanovi;
-
-/* ZA IZRADU TABLICE POSUDBE */
-
-CREATE TABLE IF NOT EXISTS posudbe
-(clanovi_id INT UNSIGNED NOT NULL,
-filmovi_id INT UNSIGNED NOT NULL,
-datum_posudbe DATETIME,
-datum_povratka DATETIME) ENGINE =InnoDB;
-
-role_id INT UNSIGNED NOT NULL
-
-ALTER TABLE posudbe
-    DROP FOREIGN KEY clanovi_id,
-    DROP FOREIGN KEY filmovi_id;
-
-ALTER TABLE users ADD 
-FOREIGN KEY(clanovi_id) 
-REFERENCES clanovi(id)
-ON DELETE CASCADE;
-
-ALTER TABLE users ADD 
-FOREIGN KEY(filmovi_id) 
-REFERENCES filmovi(id)
-ON DELETE CASCADE;
-
-DESCRIBE posudbe;
-
-/* ZA ISPUNITI TABLICU FILMOVI */
-
-INSERT INTO filmovi (naziv) VALUE ('Gospodar prstenova'),('Hobit'),('Harry Potter');
-
-SELECT * FROM filmovi;
-
-/* ZA ISPUNITI TABLICU ČLANOVI */
-
-INSERT INTO clanovi (ime, prezime) VALUE ('Ana', 'Anić'),('Pero', 'Perić'),('Ivo', 'Ivić');
-
-SELECT * FROM clanovi;
-
-/* ZA ISPUNITI TABLICU POSUDBE */
-
-INSERT INTO posudbe (clanovi_id, filmovi_id, datum_posudbe, datum_povratka) VALUE (3,3,'2019-5-5 15:22:36',NULL), (1,1,'2019-5-9 18:33:25','2019-5-20 11:43:32'), (2,2,'2019-5-17 17:27:13','2019-5-23 16:37:29');
-
-SELECT * FROM posudbe;
-
-/*UPIT kada nije vraćen film ime i prezime*/
-
-SELECT c.ime, c.prezime, p.datum_povratka
-FROM clanovi c, posudbe p
-WHERE p.clanovi_id = c.id AND p.datum_povratka IS NULL;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
-/*UPIT kada nije vraćen film i ime i prezime i koji film*/
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-SELECT c.ime, c.prezime, p.datum_povratka, f.naziv
-FROM posudbe p
-JOIN clanovi c ON p.clanovi_id = c.id
-JOIN filmovi f ON p.filmovi_id = f.id
-WHERE p.datum_povratka IS NULL;
+--
+-- Database: `videoteka1`
+--
 
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `clanovi`
+--
+
+CREATE TABLE `clanovi` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `ime` varchar(50) NOT NULL,
+  `prezime` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `clanovi`
+--
+
+INSERT INTO `clanovi` (`id`, `ime`, `prezime`) VALUES
+(41, 'Ana', 'Anić'),
+(42, 'Pero', 'Perić'),
+(43, 'Nikola', 'Nikić'),
+(44, 'Maja', 'Majić');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `filmovi`
+--
+
+CREATE TABLE `filmovi` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `naziv` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `filmovi`
+--
+
+INSERT INTO `filmovi` (`id`, `naziv`) VALUES
+(1, 'Gospodar prstenova'),
+(2, 'Hobit'),
+(3, 'Harry Potter');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posudbe`
+--
+
+CREATE TABLE `posudbe` (
+  `clanovi_id` int(10) UNSIGNED NOT NULL,
+  `filmovi_id` int(10) UNSIGNED NOT NULL,
+  `datum_posudbe` datetime DEFAULT NULL,
+  `datum_povratka` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `clanovi`
+--
+ALTER TABLE `clanovi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `filmovi`
+--
+ALTER TABLE `filmovi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `posudbe`
+--
+ALTER TABLE `posudbe`
+  ADD KEY `posudbe_ibfk_1` (`clanovi_id`),
+  ADD KEY `posudbe_ibfk_2` (`filmovi_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `clanovi`
+--
+ALTER TABLE `clanovi`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `filmovi`
+--
+ALTER TABLE `filmovi`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `posudbe`
+--
+ALTER TABLE `posudbe`
+  ADD CONSTRAINT `posudbe_ibfk_1` FOREIGN KEY (`clanovi_id`) REFERENCES `clanovi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `posudbe_ibfk_2` FOREIGN KEY (`filmovi_id`) REFERENCES `filmovi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
