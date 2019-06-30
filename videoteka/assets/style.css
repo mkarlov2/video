@@ -1,0 +1,18 @@
+.tablica td,.tablica th
+{border:2px solid #000;
+text-align:center;
+width:20%;}
+
+.tablica form input
+{width:100%;}
+
+table
+{margin:40px 0;}
+
+#sekcija
+{margin:50px 0;}
+
+#create label,#update label
+{min-width:6%;}
+
+
